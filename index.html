@@ -621,11 +621,26 @@
     new FormData(form).forEach((v, k) => { data[k] = v; });
 
     try {
-      await fetch(SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        body: new URLSearchParams(data)
+      const iframe = document.createElement('iframe');
+      iframe.name = 'hidden-iframe';
+      iframe.style.display = 'none';
+      document.body.appendChild(iframe);
+
+      const hiddenForm = document.createElement('form');
+      hiddenForm.method = 'POST';
+      hiddenForm.action = SCRIPT_URL;
+      hiddenForm.target = 'hidden-iframe';
+
+      Object.entries(data).forEach(([key, value]) => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key;
+        input.value = value;
+        hiddenForm.appendChild(input);
       });
+
+      document.body.appendChild(hiddenForm);
+      hiddenForm.submit();
 
       form.style.display = 'none';
       document.getElementById('success-msg').style.display = 'block';
