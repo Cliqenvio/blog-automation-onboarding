@@ -266,6 +266,12 @@
       box-shadow: 0 6px 20px rgba(79,70,229,0.5);
     }
 
+    button[type="submit"]:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
     .submit-note {
       font-size: 0.82rem;
       color: #a0aec0;
@@ -276,38 +282,33 @@
       display: none;
       background: #d1fae5;
       border: 1px solid #6ee7b7;
-      border-radius: 12px;
-      padding: 24px;
+      border-radius: 16px;
+      padding: 32px 24px;
       text-align: center;
       color: #065f46;
-      font-weight: 600;
       margin-top: 24px;
     }
 
-    #copy-btn {
-      background: #4f46e5;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 0.9rem;
-      margin-top: 14px;
+    .success-msg h2 {
+      font-size: 1.4rem;
+      margin-bottom: 10px;
     }
 
-    #output-area {
+    .success-msg p {
+      font-size: 0.95rem;
+      opacity: 0.85;
+    }
+
+    .error-msg {
       display: none;
-      background: #1a202c;
-      color: #e2e8f0;
+      background: #fee2e2;
+      border: 1px solid #fca5a5;
       border-radius: 12px;
-      padding: 20px;
+      padding: 20px 24px;
+      text-align: center;
+      color: #991b1b;
       margin-top: 24px;
-      font-family: 'Courier New', monospace;
-      font-size: 0.82rem;
-      white-space: pre-wrap;
-      word-break: break-word;
-      max-height: 400px;
-      overflow-y: auto;
+      font-size: 0.9rem;
     }
   </style>
 </head>
@@ -561,19 +562,20 @@
     </div>
 
     <div class="submit-area">
-      <button type="submit">✅ Gerar meus dados de configuração</button>
-      <div class="submit-note">Nenhum dado é enviado a terceiros. Tudo fica na sua tela para você copiar.</div>
+      <button type="submit" id="submit-btn">Enviar dados de configuração</button>
+      <div class="submit-note">Seus dados são enviados com segurança diretamente ao consultor.</div>
     </div>
 
   </form>
 
   <div class="success-msg" id="success-msg">
-    🎉 Dados coletados com sucesso! Copie o bloco abaixo e envie para seu consultor.
-    <br/>
-    <button id="copy-btn" onclick="copyOutput()">📋 Copiar tudo</button>
+    <h2>🎉 Dados enviados com sucesso!</h2>
+    <p>Suas informações chegaram ao consultor. Em breve entraremos em contato para dar início à configuração do seu blog.</p>
   </div>
 
-  <div id="output-area"></div>
+  <div class="error-msg" id="error-msg">
+    ⚠️ Ocorreu um erro ao enviar. Por favor, tente novamente ou entre em contato com o consultor.
+  </div>
 
 </div>
 
@@ -607,67 +609,36 @@
   inputs.forEach(inp => inp.addEventListener('input', updateProgress));
   inputs.forEach(inp => inp.addEventListener('change', updateProgress));
 
-  // Submit
-  form.addEventListener('submit', function(e) {
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyucQmtx4Rars_T0hbwRDQCLnCzwTE5W6qRxOTk5UyO0Grodiz5F7ZwVsgDQ4gdce15BA/exec';
+
+  form.addEventListener('submit', async function(e) {
     e.preventDefault();
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Enviando...';
+
     const data = {};
     new FormData(form).forEach((v, k) => { data[k] = v; });
 
-    const lines = [
-      '===== DADOS DE CONFIGURAÇÃO — BLOG AUTOMATION PRO =====',
-      '',
-      '— EMPRESA —',
-      `nomeEmpresa: ${data.nomeEmpresa || ''}`,
-      `segmento: ${data.segmento || ''}`,
-      `site: ${data.site || ''}`,
-      `urlLoja: ${data.urlLoja || ''}`,
-      `urlBlog: ${data.urlBlog || ''}`,
-      `fase_empresa: ${data.fase_empresa || ''}`,
-      '',
-      '— PÚBLICO —',
-      `publicoPrincipal: ${data.publicoPrincipal || ''}`,
-      `perfil_renda: ${data.perfil_renda || ''}`,
-      `nivel_conhecimento: ${data.nivel_conhecimento || ''}`,
-      `dores_principais: ${data.dores_principais || ''}`,
-      `objecoes_comuns: ${data.objecoes_comuns || ''}`,
-      `momentos_de_compra: ${data.momentos_de_compra || ''}`,
-      '',
-      '— POSICIONAMENTO —',
-      `tomVoz: ${data.tomVoz || ''}`,
-      `proposta_de_valor: ${data.proposta_de_valor || ''}`,
-      `diferencial_competitivo: ${data.diferencial_competitivo || ''}`,
-      `principais_concorrentes: ${data.principais_concorrentes || ''}`,
-      `temasEvitar: ${data.temasEvitar || ''}`,
-      '',
-      '— CONTEÚDO —',
-      `cta_principal: ${data.cta_principal || ''}`,
-      `intencao_predominante: ${data.intencao_predominante || ''}`,
-      `palavras_chave_foco: ${data.palavras_chave_foco || ''}`,
-      `palavras_chave_evitar: ${data.palavras_chave_evitar || ''}`,
-      `sazonalidade: ${data.sazonalidade || ''}`,
-      `mix_conteudo: ${data.mix_conteudo || ''}`,
-      '',
-      '— WORDPRESS —',
-      `wp_usuario: ${data.wp_usuario || ''}`,
-      `wp_senha_app: ${data.wp_senha_app || ''}`,
-      '',
-      '======================================================',
-    ];
+    try {
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
 
-    const output = lines.join('\n');
-    document.getElementById('output-area').textContent = output;
-    document.getElementById('output-area').style.display = 'block';
-    document.getElementById('success-msg').style.display = 'block';
-    document.getElementById('success-msg').scrollIntoView({ behavior: 'smooth' });
+      form.style.display = 'none';
+      document.getElementById('success-msg').style.display = 'block';
+      document.getElementById('success-msg').scrollIntoView({ behavior: 'smooth' });
+
+    } catch (err) {
+      btn.disabled = false;
+      btn.textContent = 'Enviar dados de configuração';
+      document.getElementById('error-msg').style.display = 'block';
+      document.getElementById('error-msg').scrollIntoView({ behavior: 'smooth' });
+    }
   });
-
-  function copyOutput() {
-    const text = document.getElementById('output-area').textContent;
-    navigator.clipboard.writeText(text).then(() => {
-      document.getElementById('copy-btn').textContent = '✅ Copiado!';
-      setTimeout(() => document.getElementById('copy-btn').textContent = '📋 Copiar tudo', 2000);
-    });
-  }
 
   // Init progress bar HTML
   document.querySelector('.progress-bar').innerHTML = `
