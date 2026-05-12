@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog Automation PRO — Onboarding do Cliente</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #f0f4f8;
+      color: #1a202c;
+      min-height: 100vh;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      color: white;
+      padding: 48px 24px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 12px;
+    }
+
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.8;
+      max-width: 560px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 0.8rem;
+      margin-bottom: 16px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .container {
+      max-width: 740px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
+
+    .progress-bar {
+      background: white;
+      border-radius: 12px;
+      padding: 16px 24px;
+      margin-bottom: 32px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.9rem;
+      color: #4a5568;
+    }
+
+    .progress-track {
+      flex: 1;
+      height: 6px;
+      background: #e2e8f0;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #4f46e5, #7c3aed);
+      border-radius: 10px;
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+
+    .section-card {
+      background: white;
+      border-radius: 16px;
+      padding: 28px 32px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      border-top: 4px solid transparent;
+    }
+
+    .section-card.purple { border-top-color: #4f46e5; }
+    .section-card.blue   { border-top-color: #0ea5e9; }
+    .section-card.green  { border-top-color: #10b981; }
+    .section-card.orange { border-top-color: #f59e0b; }
+    .section-card.pink   { border-top-color: #ec4899; }
+
+    .section-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 22px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #1a202c;
+    }
+
+    .section-title .icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    .section-card.purple .icon { background: #ede9fe; }
+    .section-card.blue   .icon { background: #e0f2fe; }
+    .section-card.green  .icon { background: #d1fae5; }
+    .section-card.orange .icon { background: #fef3c7; }
+    .section-card.pink   .icon { background: #fce7f3; }
+
+    .field {
+      margin-bottom: 20px;
+    }
+
+    .field:last-child { margin-bottom: 0; }
+
+    label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+      color: #2d3748;
+    }
+
+    label .required {
+      color: #e53e3e;
+      margin-left: 2px;
+    }
+
+    .hint {
+      font-size: 0.8rem;
+      color: #718096;
+      margin-bottom: 7px;
+      line-height: 1.4;
+    }
+
+    .example {
+      font-size: 0.78rem;
+      color: #a0aec0;
+      font-style: italic;
+      margin-top: 3px;
+    }
+
+    input[type="text"],
+    input[type="url"],
+    input[type="email"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      color: #2d3748;
+      background: #fafafa;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: #4f46e5;
+      box-shadow: 0 0 0 3px rgba(79,70,229,0.12);
+      background: white;
+    }
+
+    textarea { resize: vertical; min-height: 80px; }
+
+    .radio-group, .checkbox-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    .radio-group label, .checkbox-group label {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-weight: 400;
+      font-size: 0.9rem;
+      padding: 8px 14px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s;
+      background: #fafafa;
+      margin: 0;
+    }
+
+    .radio-group label:hover, .checkbox-group label:hover {
+      border-color: #4f46e5;
+      background: #faf5ff;
+    }
+
+    .radio-group input[type="radio"],
+    .checkbox-group input[type="checkbox"] {
+      width: auto;
+      padding: 0;
+      border: none;
+      background: none;
+      box-shadow: none;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 560px) {
+      .grid-2 { grid-template-columns: 1fr; }
+      .section-card { padding: 22px 20px; }
+      .hero h1 { font-size: 1.5rem; }
+    }
+
+    .info-box {
+      background: #f0f9ff;
+      border: 1px solid #bae6fd;
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-size: 0.85rem;
+      color: #0369a1;
+      margin-bottom: 28px;
+      line-height: 1.5;
+    }
+
+    .submit-area {
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    button[type="submit"] {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: white;
+      border: none;
+      padding: 16px 48px;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 12px;
+      cursor: pointer;
+      letter-spacing: 0.3px;
+      transition: transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 4px 14px rgba(79,70,229,0.4);
+    }
+
+    button[type="submit"]:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(79,70,229,0.5);
+    }
+
+    .submit-note {
+      font-size: 0.82rem;
+      color: #a0aec0;
+      margin-top: 12px;
+    }
+
+    .success-msg {
+      display: none;
+      background: #d1fae5;
+      border: 1px solid #6ee7b7;
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
+      color: #065f46;
+      font-weight: 600;
+      margin-top: 24px;
+    }
+
+    #copy-btn {
+      background: #4f46e5;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      margin-top: 14px;
+    }
+
+    #output-area {
+      display: none;
+      background: #1a202c;
+      color: #e2e8f0;
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 24px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.82rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="badge">✦ Blog Automation PRO</div>
+  <h1>Formulário de Onboarding</h1>
+  <p>Preencha os dados abaixo para configurarmos a automação do seu blog com precisão. Leva menos de 10 minutos.</p>
+</div>
+
+<div class="container">
+
+  <div class="info-box">
+    📋 <strong>Como funciona:</strong> Estas informações alimentam toda a automação do seu blog — geração de conteúdo, SEO e publicação automática. Quanto mais detalhes você fornecer, melhores serão os resultados.
+  </div>
+
+  <form id="onboarding-form" novalidate>
+
+    <!-- SEÇÃO 1: EMPRESA -->
+    <div class="section-card purple">
+      <div class="section-title">
+        <span class="icon">🏢</span>
+        Dados da Empresa
+      </div>
+
+      <div class="grid-2">
+        <div class="field">
+          <label for="nomeEmpresa">Nome da empresa / marca <span class="required">*</span></label>
+          <div class="hint">Como sua marca é conhecida pelo público</div>
+          <input type="text" id="nomeEmpresa" name="nomeEmpresa" placeholder="Ex: Tuttiamore" required />
+        </div>
+        <div class="field">
+          <label for="segmento">Segmento / nicho de mercado <span class="required">*</span></label>
+          <div class="hint">Área de atuação do seu blog</div>
+          <input type="text" id="segmento" name="segmento" placeholder="Ex: Maternidade - Produtos para Bebês" required />
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="field">
+          <label for="site">URL do site principal</label>
+          <div class="hint">Pode ser igual ao blog se não tiver site separado</div>
+          <input type="url" id="site" name="site" placeholder="https://www.suaempresa.com.br" />
+        </div>
+        <div class="field">
+          <label for="urlLoja">URL da loja / e-commerce</label>
+          <div class="hint">Deixe em branco se não tiver loja online</div>
+          <input type="url" id="urlLoja" name="urlLoja" placeholder="https://loja.suaempresa.com.br" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="urlBlog">URL do blog WordPress <span class="required">*</span></label>
+        <div class="hint">Endereço completo do blog que será automatizado</div>
+        <input type="url" id="urlBlog" name="urlBlog" placeholder="https://blog.suaempresa.com.br" required />
+      </div>
+
+      <div class="field">
+        <label>Fase atual da empresa <span class="required">*</span></label>
+        <div class="hint">Momento em que o negócio se encontra</div>
+        <div class="radio-group">
+          <label><input type="radio" name="fase_empresa" value="lançamento" required /> 🚀 Lançamento</label>
+          <label><input type="radio" name="fase_empresa" value="crescimento" /> 📈 Crescimento</label>
+          <label><input type="radio" name="fase_empresa" value="consolidação" /> 🏆 Consolidação</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEÇÃO 2: PÚBLICO -->
+    <div class="section-card blue">
+      <div class="section-title">
+        <span class="icon">👥</span>
+        Público-Alvo
+      </div>
+
+      <div class="field">
+        <label for="publicoPrincipal">Quem são seus clientes? <span class="required">*</span></label>
+        <div class="hint">Descreva as pessoas que compram da sua empresa</div>
+        <div class="example">Ex: Mães de crianças de 0 a 10 anos, grávidas e avós</div>
+        <textarea id="publicoPrincipal" name="publicoPrincipal" rows="2" placeholder="Descreva o perfil do seu público principal..." required></textarea>
+      </div>
+
+      <div class="grid-2">
+        <div class="field">
+          <label for="perfil_renda">Faixa de renda do público</label>
+          <div class="hint">Classe socioeconômica predominante</div>
+          <select id="perfil_renda" name="perfil_renda">
+            <option value="">Selecione...</option>
+            <option>Classe A</option>
+            <option>Classe A e B+</option>
+            <option>Classe A, B+ e B</option>
+            <option>Classe B e C</option>
+            <option>Classe C e D</option>
+            <option>Todas as classes</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Nível de conhecimento do público</label>
+          <div class="hint">Quanto o público entende do assunto</div>
+          <div class="radio-group" style="margin-top:4px;">
+            <label><input type="radio" name="nivel_conhecimento" value="iniciante" /> Iniciante</label>
+            <label><input type="radio" name="nivel_conhecimento" value="intermediário" /> Intermediário</label>
+            <label><input type="radio" name="nivel_conhecimento" value="avançado" /> Avançado</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="dores_principais">Principais dores e medos do público <span class="required">*</span></label>
+        <div class="hint">Quais problemas, medos ou frustrações seu público enfrenta?</div>
+        <div class="example">Ex: Medo de errar na amamentação, não ter rede de apoio, bebê que não dorme</div>
+        <textarea id="dores_principais" name="dores_principais" placeholder="Liste as principais dores..." required></textarea>
+      </div>
+
+      <div class="field">
+        <label for="objecoes_comuns">Principais objeções de compra</label>
+        <div class="hint">O que impede o cliente de comprar da sua empresa?</div>
+        <div class="example">Ex: Preço alto, dúvida se a loja é confiável, concorrência com marketplaces</div>
+        <textarea id="objecoes_comuns" name="objecoes_comuns" placeholder="O que o cliente diz antes de não comprar?"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="momentos_de_compra">Momentos de compra do público</label>
+        <div class="hint">Quando o cliente costuma decidir comprar?</div>
+        <div class="example">Ex: Após a gestação, do 0 aos 12 meses do bebê, chá de bebê</div>
+        <textarea id="momentos_de_compra" name="momentos_de_compra" rows="2" placeholder="Em que momento da vida o cliente costuma comprar?"></textarea>
+      </div>
+    </div>
+
+    <!-- SEÇÃO 3: POSICIONAMENTO -->
+    <div class="section-card green">
+      <div class="section-title">
+        <span class="icon">🎯</span>
+        Posicionamento e Tom de Voz
+      </div>
+
+      <div class="field">
+        <label for="tomVoz">Tom de voz do blog <span class="required">*</span></label>
+        <div class="hint">Como o blog deve se comunicar com o público?</div>
+        <div class="example">Ex: Acolhedor, empático e próximo — educativo e didático</div>
+        <textarea id="tomVoz" name="tomVoz" rows="2" placeholder="Descreva o estilo de comunicação ideal..." required></textarea>
+      </div>
+
+      <div class="field">
+        <label for="proposta_de_valor">Proposta de valor principal <span class="required">*</span></label>
+        <div class="hint">Principal benefício que sua empresa entrega ao cliente</div>
+        <div class="example">Ex: Maternidade sem culpa com praticidade</div>
+        <input type="text" id="proposta_de_valor" name="proposta_de_valor" placeholder="O que torna sua empresa especial para o cliente?" required />
+      </div>
+
+      <div class="field">
+        <label for="diferencial_competitivo">Diferencial competitivo</label>
+        <div class="hint">O que torna sua empresa única em relação aos concorrentes?</div>
+        <div class="example">Ex: Frete rápido, preços atrativos, parcelamento sem juros</div>
+        <textarea id="diferencial_competitivo" name="diferencial_competitivo" rows="2" placeholder="O que você oferece que a concorrência não oferece?"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="principais_concorrentes">Principais concorrentes</label>
+        <div class="hint">Nomes dos concorrentes diretos separados por vírgula</div>
+        <div class="example">Ex: Alô Bebê, Tip Top, Mercado Livre</div>
+        <input type="text" id="principais_concorrentes" name="principais_concorrentes" placeholder="Concorrente 1, Concorrente 2, Concorrente 3..." />
+      </div>
+
+      <div class="field">
+        <label for="temasEvitar">Temas a evitar no blog</label>
+        <div class="hint">Assuntos que o blog NÃO deve abordar</div>
+        <div class="example">Ex: Política, religião, marcas concorrentes</div>
+        <textarea id="temasEvitar" name="temasEvitar" rows="2" placeholder="Liste temas sensíveis ou fora do escopo..."></textarea>
+      </div>
+    </div>
+
+    <!-- SEÇÃO 4: CONTEÚDO -->
+    <div class="section-card orange">
+      <div class="section-title">
+        <span class="icon">✍️</span>
+        Estratégia de Conteúdo
+      </div>
+
+      <div class="field">
+        <label for="cta_principal">CTA principal dos posts</label>
+        <div class="hint">Qual ação os posts devem incentivar o leitor a tomar?</div>
+        <div class="example">Ex: Ver produto na loja, assinar newsletter, seguir no Instagram</div>
+        <input type="text" id="cta_principal" name="cta_principal" placeholder="Qual ação você quer que o leitor tome?" />
+      </div>
+
+      <div class="field">
+        <label>Intenção predominante dos posts <span class="required">*</span></label>
+        <div class="hint">Qual o foco principal do conteúdo que será gerado?</div>
+        <div class="radio-group">
+          <label><input type="radio" name="intencao_predominante" value="informacional" required /> 📚 Informacional</label>
+          <label><input type="radio" name="intencao_predominante" value="comercial" /> 🛒 Comercial</label>
+          <label><input type="radio" name="intencao_predominante" value="transacional" /> 💳 Transacional</label>
+          <label><input type="radio" name="intencao_predominante" value="misto" /> 🔀 Misto</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="palavras_chave_foco">Palavras-chave foco (SEO) <span class="required">*</span></label>
+        <div class="hint">Até 10 palavras-chave para rankear no Google — separadas por vírgula</div>
+        <div class="example">Ex: cadeira de alimentação para bebê, alimentação infantil, copo de bebê</div>
+        <textarea id="palavras_chave_foco" name="palavras_chave_foco" placeholder="palavra-chave 1, palavra-chave 2, palavra-chave 3..." required></textarea>
+      </div>
+
+      <div class="field">
+        <label for="palavras_chave_evitar">Palavras-chave a evitar</label>
+        <div class="hint">Termos que não convertem neste nicho ou que devem ser evitados</div>
+        <div class="example">Ex: grátis, barato, promoção relâmpago</div>
+        <textarea id="palavras_chave_evitar" name="palavras_chave_evitar" rows="2" placeholder="Termos que não funcionam para o seu público..."></textarea>
+      </div>
+
+      <div class="field">
+        <label for="sazonalidade">Datas e sazonalidades importantes</label>
+        <div class="hint">Datas do seu nicho que geram mais vendas ou engajamento</div>
+        <div class="example">Ex: Natal, Dia das Crianças, Dia do Cliente, Dia das Mães, chá de bebê</div>
+        <textarea id="sazonalidade" name="sazonalidade" rows="2" placeholder="Liste as datas mais importantes para o seu negócio..."></textarea>
+      </div>
+
+      <div class="field">
+        <label for="mix_conteudo">Mix de conteúdo desejado</label>
+        <div class="hint">Proporção de tipos de post que você quer publicar</div>
+        <div class="example">Ex: 50% informacional, 20% produto, 20% review, 10% comparativo</div>
+        <input type="text" id="mix_conteudo" name="mix_conteudo" placeholder="Ex: 50% informacional, 30% produto, 20% review..." />
+      </div>
+    </div>
+
+    <!-- SEÇÃO 5: WORDPRESS -->
+    <div class="section-card pink">
+      <div class="section-title">
+        <span class="icon">⚙️</span>
+        Acesso ao WordPress
+      </div>
+
+      <div class="info-box" style="margin-bottom:20px;">
+        🔒 <strong>Dados seguros:</strong> Essas informações são necessárias para conectar a automação ao seu blog. Elas ficam armazenadas apenas na sua planilha privada e nunca são compartilhadas.
+      </div>
+
+      <div class="field">
+        <label for="wp_usuario">Usuário do WordPress <span class="required">*</span></label>
+        <div class="hint">Login do painel WordPress (normalmente seu e-mail)</div>
+        <input type="email" id="wp_usuario" name="wp_usuario" placeholder="seu@email.com.br" required />
+      </div>
+
+      <div class="field">
+        <label for="wp_senha_app">Senha de Aplicativo do WordPress <span class="required">*</span></label>
+        <div class="hint">Gerada em <strong>WP → Usuários → Perfil → Senhas de Aplicativo</strong> — NÃO é sua senha normal</div>
+        <input type="text" id="wp_senha_app" name="wp_senha_app" placeholder="xxxx xxxx xxxx xxxx xxxx xxxx" required />
+        <div class="example">Dúvida? Acesse seu WordPress → Usuários → seu perfil → role até "Senhas de Aplicativo"</div>
+      </div>
+    </div>
+
+    <div class="submit-area">
+      <button type="submit">✅ Gerar meus dados de configuração</button>
+      <div class="submit-note">Nenhum dado é enviado a terceiros. Tudo fica na sua tela para você copiar.</div>
+    </div>
+
+  </form>
+
+  <div class="success-msg" id="success-msg">
+    🎉 Dados coletados com sucesso! Copie o bloco abaixo e envie para seu consultor.
+    <br/>
+    <button id="copy-btn" onclick="copyOutput()">📋 Copiar tudo</button>
+  </div>
+
+  <div id="output-area"></div>
+
+</div>
+
+<script>
+  // Progress bar
+  const form = document.getElementById('onboarding-form');
+  const inputs = form.querySelectorAll('input, textarea, select');
+  const progressFill = document.querySelector('.progress-fill');
+  const progressText = document.querySelector('.progress-bar span');
+
+  function updateProgress() {
+    let filled = 0;
+    inputs.forEach(inp => {
+      if (inp.type === 'radio' || inp.type === 'checkbox') return;
+      if (inp.value.trim()) filled++;
+    });
+    const radios = {};
+    form.querySelectorAll('input[type="radio"]').forEach(r => {
+      if (r.checked) radios[r.name] = true;
+    });
+    const total = form.querySelectorAll('input:not([type="radio"]):not([type="checkbox"]), textarea, select').length
+                + Object.keys(document.querySelectorAll('input[type="radio"]') ?
+                    [...new Set([...form.querySelectorAll('input[type="radio"]')].map(r => r.name))] : []).length;
+    const radioGroups = [...new Set([...form.querySelectorAll('input[type="radio"]')].map(r => r.name))];
+    const filledRadios = radioGroups.filter(name => form.querySelector(`input[name="${name}"]:checked`)).length;
+    const pct = Math.round(((filled + filledRadios) / (inputs.length)) * 100);
+    progressFill.style.width = Math.min(pct, 100) + '%';
+    if (progressText) progressText.textContent = Math.min(pct, 100) + '% preenchido';
+  }
+
+  inputs.forEach(inp => inp.addEventListener('input', updateProgress));
+  inputs.forEach(inp => inp.addEventListener('change', updateProgress));
+
+  // Submit
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const data = {};
+    new FormData(form).forEach((v, k) => { data[k] = v; });
+
+    const lines = [
+      '===== DADOS DE CONFIGURAÇÃO — BLOG AUTOMATION PRO =====',
+      '',
+      '— EMPRESA —',
+      `nomeEmpresa: ${data.nomeEmpresa || ''}`,
+      `segmento: ${data.segmento || ''}`,
+      `site: ${data.site || ''}`,
+      `urlLoja: ${data.urlLoja || ''}`,
+      `urlBlog: ${data.urlBlog || ''}`,
+      `fase_empresa: ${data.fase_empresa || ''}`,
+      '',
+      '— PÚBLICO —',
+      `publicoPrincipal: ${data.publicoPrincipal || ''}`,
+      `perfil_renda: ${data.perfil_renda || ''}`,
+      `nivel_conhecimento: ${data.nivel_conhecimento || ''}`,
+      `dores_principais: ${data.dores_principais || ''}`,
+      `objecoes_comuns: ${data.objecoes_comuns || ''}`,
+      `momentos_de_compra: ${data.momentos_de_compra || ''}`,
+      '',
+      '— POSICIONAMENTO —',
+      `tomVoz: ${data.tomVoz || ''}`,
+      `proposta_de_valor: ${data.proposta_de_valor || ''}`,
+      `diferencial_competitivo: ${data.diferencial_competitivo || ''}`,
+      `principais_concorrentes: ${data.principais_concorrentes || ''}`,
+      `temasEvitar: ${data.temasEvitar || ''}`,
+      '',
+      '— CONTEÚDO —',
+      `cta_principal: ${data.cta_principal || ''}`,
+      `intencao_predominante: ${data.intencao_predominante || ''}`,
+      `palavras_chave_foco: ${data.palavras_chave_foco || ''}`,
+      `palavras_chave_evitar: ${data.palavras_chave_evitar || ''}`,
+      `sazonalidade: ${data.sazonalidade || ''}`,
+      `mix_conteudo: ${data.mix_conteudo || ''}`,
+      '',
+      '— WORDPRESS —',
+      `wp_usuario: ${data.wp_usuario || ''}`,
+      `wp_senha_app: ${data.wp_senha_app || ''}`,
+      '',
+      '======================================================',
+    ];
+
+    const output = lines.join('\n');
+    document.getElementById('output-area').textContent = output;
+    document.getElementById('output-area').style.display = 'block';
+    document.getElementById('success-msg').style.display = 'block';
+    document.getElementById('success-msg').scrollIntoView({ behavior: 'smooth' });
+  });
+
+  function copyOutput() {
+    const text = document.getElementById('output-area').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      document.getElementById('copy-btn').textContent = '✅ Copiado!';
+      setTimeout(() => document.getElementById('copy-btn').textContent = '📋 Copiar tudo', 2000);
+    });
+  }
+
+  // Init progress bar HTML
+  document.querySelector('.progress-bar').innerHTML = `
+    <span style="white-space:nowrap;font-weight:600;">Progresso:</span>
+    <div class="progress-track"><div class="progress-fill"></div></div>
+    <span>0% preenchido</span>
+  `;
+  // re-query after innerHTML replacement
+  document.querySelectorAll('input, textarea, select').forEach(inp => {
+    inp.addEventListener('input', updateProgress);
+    inp.addEventListener('change', updateProgress);
+  });
+</script>
+</body>
+</html>
